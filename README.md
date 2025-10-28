@@ -1,12 +1,12 @@
 # APRS-pocket
 
-APRS with ATtiny1614
+**APRS with ATtiny1614**
 
-The goal is to get a cheap APRS Tracker with a classic pocket.
+The goal is to build a low-cost APRS tracker that fits inside a classic pocket format.  
+Tracker configuration is done via serial communication using Google Chrome — no app installation required.
 
-![proto](./images/proto.jpg)
+## [APRS POCKET Setup](https://f4goh.github.io/aprs-pocket/)
 
-#  [APRS POCKET Setup](https://f4goh.github.io/aprs-pocket/)
 
 ## Schematic
 
