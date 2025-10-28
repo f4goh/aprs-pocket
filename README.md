@@ -59,7 +59,7 @@ Tracker configuration is done via serial communication using Google Chrome — n
 ![test](./images/test.png)
 
 
-## Programming ATtiny1614 with UPDI and Arduino IDE
+## Programming [ATtiny1614 with UPDI and Arduino IDE](https://www.hackster.io/john-bradnam/using-the-new-attiny-processors-with-arduino-ide-612185)
 
 To get started with UPDI programming for the ATtiny1614 using the Arduino IDE, follow these steps:
 
