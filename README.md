@@ -63,19 +63,31 @@ Tracker configuration is done via serial communication using Google Chrome — n
 
 To get started with UPDI programming for the ATtiny1614 using the Arduino IDE, follow these steps:
 
-### 1. Install megaTinyCore
+### 1. Update board manager
+
+This board package can be installed via the board manager. The boards manager URL is:
+
+```console
+http://drazzy.com/package_drazzy.com_index.json
+```
+- File -> Preferences, enter the above URL in "Additional Boards Manager URLs"
+- Tools -> Boards -> Boards Manager...
+- Select "megaTinyCore by Spence Konde" and click "Install".
+
+### 2. Install megaTinyCore
+
 Use the Board Manager in Arduino IDE to install the **megaTinyCore** package.  
 ![Install megaTinyCore](./images/m0.png)
 
-### 2. Select the ATtiny family
+### 3. Select the ATtiny family
 Choose the **ATtiny** family from the board selection menu.  
 ![Select ATtiny family](./images/m1.png)
 
-### 3. Choose ATtiny1614
+### 4. Choose ATtiny1614
 Pick **ATtiny1614** as your target microcontroller.  
 ![Select ATtiny1614](./images/m2.png)
 
-### 4. Disable unnecessary features
+### 5. Disable unnecessary features
 To optimize memory usage, disable the following options in the board settings:
 
 - **Remove millis() support**  
@@ -84,7 +96,7 @@ To optimize memory usage, disable the following options in the board settings:
 - **Remove float support in sprintf()**  
   ![Remove float sprintf](./images/m4.png)
 
-### 5. Compile APRS-pocket-parser.ino
+### 6. Compile APRS-pocket-parser.ino
 
 ## Flash the firmware
 
