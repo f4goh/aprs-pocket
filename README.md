@@ -50,7 +50,7 @@ Tracker configuration is done via serial communication using Google Chrome — n
 ![ATtiny_x14](./images/ATtiny_x14.png)
 
 
-### SpMic Pinout
+### SpMic Pinout (colors depends of source cable)
 
 ![SpMic_pinout](./images/SpMic_pinout.png)
 
