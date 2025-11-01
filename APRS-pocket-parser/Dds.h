@@ -12,7 +12,9 @@
 #include <avr/interrupt.h>
   
 
-#define SAMPLING_FREQUENCY 26427.0    //fréquence d'échantillonage
+
+#define SAMPLING_FREQUENCY 26400.0    //fréquence d'échantillonage = demi période de PA3
+#define PER_VALUE 374       //A ajuster pour obtenir 13200HZ +/-5Hz sur PA3 (10)
 #define SYNC 10             //gpio pour oscillo IRQ timer
 #define DAC_CHANNEL 3
 

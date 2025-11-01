@@ -2,7 +2,7 @@
   Génère un signal APRS en FSK 1200 baud sur la sortie DAC de l'ATTINY1614
   en fonction du GPS
   https://github.com/wb2osz/aprsspec
-  Configuation via une page web  
+  Configuation via une page web
 */
 #include <Arduino.h>
 #include <EEPROM.h>
@@ -21,11 +21,14 @@ typedef struct {
   char comment[31];
   char symbol;
   uint8_t minute;
+  uint8_t second;
   bool smart;
   bool compressed;
   bool altitude;
+  bool display;
   MobilityType mobility;
 } configuration;
+
 
 
 ParserNMEA gps;
@@ -53,14 +56,15 @@ int main() {
   afficheConfig();
 
   /*
-    strcpy(config->callsign,"F4GOH-2");
-    strcpy(config->comment,"Tiny");
-    config->symbol='>';
-    config->minute=10;
-    config->smart=false;
-    config->compressed=false;
-    config->altitude=false;
-    config->mobility=RUNNER;
+     strcpy(config->callsign, "F4GOH-4");
+    strcpy(config->comment, "Nano");
+    config->symbol = '>';
+    config->minute = 10;
+    config->smart = false;
+    config->compressed = false;
+    config->altitude = false;
+    config->display = false;
+    config->mobility = RUNNER;
     EEPROM.put(0, *config);
   */
 
@@ -76,7 +80,7 @@ int main() {
   ax25->begin(BITRATE, config->callsign, dstCallsign, path1, path2);
 
 
-  smartBeacon = new Smart();  
+  smartBeacon = new Smart();
 
 
   while (1) {
@@ -99,7 +103,7 @@ void syncGps() {
     if (gps.encode(c)) // Did a new valid sentence come in?
       newData = true;
   }
-  
+
   if (newData) {
     newData = false;
     if (gps.isTimeValid() && gps.getSecond() != second_prec) {
@@ -124,18 +128,22 @@ void syncGps() {
           }
         }
         else {
-          //if ((gps.getSecond() % config->minute == 0) && (gps.getSecond()==0)) {
-          if (gps.getSecond() % config->minute == 0) { //provisoire pour aller plus vite  5 secondes trop court
-            //Serial.println(lat,6);
-            //Serial.println(lon,6);
-            txing();
+          if (config->minute == 0) {                      //envoi plusieurs fois par minute suivant modulo seconde
+            if (gps.getSecond() % config->second == 0) {
+              txing();
+            }
+          } else {    //envoi toute les config->minute  à la config->second
+            if ((gps.getMinute() % config->minute == 0) && (gps.getSecond() == config->second)) {
+              txing();
+            }
           }
         }
       }
     }
   }
-
 }
+
+
 
 
 void txing() {
@@ -189,6 +197,7 @@ void afficheConfig()
   Serial.print(F("SmartBeaconing: ")); Serial.println(config->smart ? "Yes" : "No");
   Serial.print(F("Compressed: ")); Serial.println(config->compressed ? "Yes" : "No");
   Serial.print(F("Altitude: ")); Serial.println(config->altitude ? "Yes" : "No");
+  Serial.print(F("Display: ")); Serial.println(config->display ? "Yes" : "No");
   Serial.print(F("Mobility: "));
   switch (config->mobility) {
     case 0 :  Serial.println(F("RUNNER"));

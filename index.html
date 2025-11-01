@@ -16,6 +16,9 @@
     <label for="minute">Minute:</label>
     <select id="minute"></select>
 
+    <label for="second">Second:</label>
+    <select id="second"></select>
+
      <label for="mobility">Mobility:</label>
     <select id="mobility">
     </select>
@@ -32,10 +35,16 @@
       <input type="checkbox" id="altitude"> Altitude
     </label>
 
+    <label for="display">
+      <input type="checkbox" id="display"> Display
+    </label>
+
     <label for="comment">Comment (max 30 chars):</label>
     <input type="text" id="comment" maxlength="30" value="hello">
 
-    <button type="submit">Send</button>
+    <button type="button" id="connectBtn">Connect</button>
+    <button type="button" id="sendBtn" disabled>Send</button>
+
   </form>
 
   <div id="status"></div>
