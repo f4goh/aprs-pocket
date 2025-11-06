@@ -58,6 +58,14 @@ Tracker configuration is done via serial communication using Google Chrome — n
   
 ![test](./images/test.png)
 
+### APRS symbols
+  
+![test](./images/Icon-set.png)
+
+![test](./images/aprs-symbols-24-0@2x.png)
+
+![test](./images/aprs-symbols-24-1@2x.png)
+
 
 ## Programming [ATtiny1614 with UPDI and Arduino IDE](https://www.hackster.io/john-bradnam/using-the-new-attiny-processors-with-arduino-ide-612185)
 
