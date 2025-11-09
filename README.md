@@ -116,7 +116,7 @@ To optimize memory usage, disable the following options in the board settings:
 
 UPDI (Unified Program and Debug Interface) allows programming ATtiny1614 using just one data pin. You can use a USB-to-Serial adapter with a 4.7kΩ resistor and the megatinycore to upload code via Arduino IDE.
 
-Soon...
+![UPDI](./images/UPDI.png)
 
 ## License
 
