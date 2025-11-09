@@ -69,11 +69,15 @@ void ParserNMEA::parseGPRMC(char* sentence) {
 
   while (t < 12 && (tokens[t] = strtok(nullptr, ","))) t++;
 
-  if (tokens[3] && tokens[4] && tokens[5] && tokens[6]) {
+  // Vérifie que les coordonnées ne sont pas nulles
+  bool latValid = tokens[3] && strlen(tokens[3]) > 0 && strcmp(tokens[3], "0000.0000") != 0;
+  bool lonValid = tokens[5] && strlen(tokens[5]) > 0 && strcmp(tokens[5], "00000.0000") != 0;
+
+  if (latValid && lonValid &&
+      tokens[4] && strlen(tokens[4]) > 0 &&
+      tokens[6] && strlen(tokens[6]) > 0) {
     snprintf(latStr, sizeof(latStr), "%s%c", tokens[3], tokens[4][0]);
     snprintf(lonStr, sizeof(lonStr), "%s%c", tokens[5], tokens[6][0]);
-    //Serial.println(latStr);
-    //Serial.println(lonStr);
     coordValid = true;
   } else {
     coordValid = false;
@@ -89,16 +93,14 @@ void ParserNMEA::parseGPRMC(char* sentence) {
 
   if (tokens[8]) {
     courseDeg = atof(tokens[8]);
-    if (courseDeg >= 0.0 && courseDeg < 360.0) {
-      courseValid = true;
-    } else {
-      courseValid = false;
-    }
+    courseValid = (courseDeg >= 0.0 && courseDeg < 360.0);
   } else {
     courseDeg = 0.0;
     courseValid = false;
   }
 }
+
+
 
 
 // Parse GGA sentence

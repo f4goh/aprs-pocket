@@ -67,21 +67,28 @@ const char* Position::getPduAprs(bool compressed, bool altEnable) {
   memset(salt, '\0', 10);
   memset(com, '\0', 50);
 
-
+  snprintf(alt91, sizeof(alt91), "  G");
+  
   if (altEnable) {
-    snprintf(salt, sizeof (salt), "/A=%06d", altitude);
-    strcat(com, salt);
-
+    if (!compressed) {
+      snprintf(salt, sizeof (salt), "/A=%06d", altitude);
+      strcat(com, salt);
+    }
+    else {
+      if (altitude > 0) {
+        altitude_APRS_comp();
+      }
+    }
   }
   strcat(com, comment);
-
 
   if (compressed) {
 
     latitude_to_comp_str();
     longitude_to_comp_str();
 
-    snprintf(pdu, sizeof (pdu), "!%c%s%s%c  T%s", symboleTable, slat, slong, symbole, com);
+
+    snprintf(pdu, sizeof (pdu), "!%c%s%s%c%s%s", symboleTable, slat, slong, symbole, alt91, com);
   }
   else {
     latitude_to_str();
@@ -90,6 +97,7 @@ const char* Position::getPduAprs(bool compressed, bool altEnable) {
   }
   return pdu;
 }
+
 
 void Position::latitude_to_str() {
   float latAbs = fabs(latitude);
@@ -145,6 +153,14 @@ void Position::longitude_to_str() {
 }
 
 
+void Position::altitude_APRS_comp() {
+
+  int x = static_cast<int> (log((float) altitude) / 0.001998003);
+  alt91[0] = (x / 91) + 33;
+  alt91[1] = (x % 91) + 33;
+  alt91[2] = 'S';
+  alt91[3] = '\0';
+}
 
 
 void Position::latitude_to_comp_str() {

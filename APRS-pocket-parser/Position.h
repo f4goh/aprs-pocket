@@ -25,7 +25,7 @@ class Position {
     Position(const Position& orig);
     virtual ~Position();
 
-    const char* getPduAprs(bool compressed = false,bool altEnable = false);
+    const char* getPduAprs(bool compressed = false, bool altEnable = false);
     void setLatitude(const float _latitude);
     void setLongitude(const float _longitude);
     void setComment(char * _comment);
@@ -39,6 +39,7 @@ class Position {
     void convBase91(int32_t x, char* base91);
     char    slat[9];
     char    slong[10];
+    char    alt91[4];
     float   latitude;
     float   longitude;
     char    symboleTable;
@@ -53,6 +54,7 @@ class Position {
     void latitude_to_comp_str();
     void longitude_to_comp_str();
     void trimTrailingSpaces(char *str);
+    void altitude_APRS_comp();
 };
 
 #endif /* POSITION_H */

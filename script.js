@@ -120,6 +120,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const callsign = callsignInput.padEnd(9, ' ') + '\0';
       const commentInput = document.getElementById("comment").value;
       const comment = commentInput.padEnd(30, ' ') + '\0';
+      const altSymbolInput = document.getElementById("altSymbol").value;
+      const altSymbol = altSymbolInput.length > 0 ? altSymbolInput.charCodeAt(0) : 0;
       const symbolInput = document.getElementById("symbol").value;
       const symbol = symbolInput.length > 0 ? symbolInput.charCodeAt(0) : 0;
       const minute = parseInt(document.getElementById("minute").value);
@@ -138,13 +140,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const mobility = parseInt(document.getElementById("mobility").value);
 
       const encoder = new TextEncoder();
-      const buffer = new Uint8Array(49);
+      const buffer = new Uint8Array(50);
       let offset = 0;
 
       encoder.encodeInto(callsign, buffer.subarray(offset, offset + 10));
       offset += 10;
       encoder.encodeInto(comment, buffer.subarray(offset, offset + 31));
       offset += 31;
+      buffer[offset++] = altSymbol;
       buffer[offset++] = symbol;
       buffer[offset++] = minute;
       buffer[offset++] = second;

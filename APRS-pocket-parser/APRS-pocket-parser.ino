@@ -14,11 +14,15 @@
 
 #define BITRATE 1200
 #define GPSBAUD 9600
-#define LED 1
+#define PTT 1
+#define PWR_GPS 9
+#define LED_BEAT 8
+
 
 typedef struct {
   char callsign[10];
   char comment[31];
+  char tableSymbol;
   char symbol;
   uint8_t minute;
   uint8_t second;
@@ -28,6 +32,7 @@ typedef struct {
   bool display;
   MobilityType mobility;
 } configuration;
+
 
 
 
@@ -45,30 +50,35 @@ bool newData = false;
 
 int main() {
   Serial.begin(GPSBAUD);
-  // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED, OUTPUT);
-  digitalWrite(LED, LOW);
-
+  pinMode(PTT, OUTPUT);
+  digitalWrite(PTT, LOW);
+  pinMode(PWR_GPS, OUTPUT);
+  digitalWrite(PWR_GPS, LOW);
+   pinMode(LED_BEAT, OUTPUT);
+  digitalWrite(LED_BEAT, LOW);
+  
   _PROTECTED_WRITE(CLKCTRL_MCLKCTRLB, 0);  // Horloge principale à 20 MHz
 
   config = new configuration;
   EEPROM.get(0, *config);
   afficheConfig();
 
-  /*
-     strcpy(config->callsign, "F4GOH-4");
+  if (EEPROM.read(0) == 0xff) {
+    strcpy(config->callsign, "F4XXX-4");
     strcpy(config->comment, "Nano");
+    config->tableSymbol = '/';
     config->symbol = '>';
     config->minute = 10;
+    config->second = 10;
     config->smart = false;
-    config->compressed = false;
+    config->compressed = true;
     config->altitude = false;
     config->display = false;
     config->mobility = RUNNER;
     EEPROM.put(0, *config);
-  */
+  }
 
-  pos = new Position(47.890242, 0.276770, config->comment, '/', config->symbol);
+  pos = new Position(47.890242, 0.276770, config->comment, config->tableSymbol, config->symbol);
 
   leFsk = new Fsk(1200, 1000);
   ax25 = new Ax25(*leFsk);
@@ -109,7 +119,7 @@ void syncGps() {
     if (gps.isTimeValid() && gps.getSecond() != second_prec) {
       second_prec = gps.getSecond();
       Serial.println(gps.getTime());
-
+      digitalWrite(LED_BEAT, digitalRead(LED_BEAT) ^ 1);
       if (gps.isCoordValid()) {
         float lat = gps.getLatDec();
         float lon = gps.getLongDec();
@@ -152,12 +162,12 @@ void txing() {
   //Serial.println(gps->f_speed_kmph());
   //Serial.println(gps->course());
   const char* pdu;
-  digitalWrite(LED, HIGH);   // turn the LED on ptt on
+  digitalWrite(PTT, HIGH);   // turn the LED on ptt on
   pdu = pos->getPduAprs(config->compressed, config->altitude && gps.isAltValid());
   Serial.println(pdu);
   Serial.flush();
   ax25->txMessage(pdu);
-  digitalWrite(LED, LOW);    // turn the LED off ptt off
+  digitalWrite(PTT, LOW);    // turn the LED off ptt off
 }
 
 
@@ -179,7 +189,7 @@ void saveConfig() {
   if (n == sizeof(configuration)) {
     EEPROM.put(0, *config); //sauve
     //afficheConfig();
-    digitalWrite(LED, HIGH); //led PTT on
+    digitalWrite(LED_BEAT, HIGH); //led PTT on
     leFsk->delay(1000);
     _PROTECTED_WRITE(RSTCTRL.SWRR, RSTCTRL_SWRE_bm); // Déclenche un reset logiciel pour prise en compte de la nouvelle config
   }
@@ -191,6 +201,7 @@ void afficheConfig()
 {
   Serial.println(F("Configuration :"));
   Serial.print(F("Callsign: ")); Serial.println(config->callsign);
+  Serial.print(F("Table symbol: ")); Serial.println(config->tableSymbol);
   Serial.print(F("Symbol: ")); Serial.println(config->symbol);
   Serial.print(F("Comment: ")); Serial.println(config->comment);
   Serial.print(F("Minute: ")); Serial.println(config->minute);
