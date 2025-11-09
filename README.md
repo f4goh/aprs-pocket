@@ -5,13 +5,19 @@
 The goal is to build a low-cost APRS tracker that fits inside a classic pocket format.  
 Tracker configuration is done via serial communication using Google Chrome — no app installation required.
 
+![ens](./images/ensemble.jpg)
+
 ## [APRS POCKET Setup](https://f4goh.github.io/aprs-pocket/)
 
+![config](./images/config.png)
 
 ## Schematic
 
 ![Schematic](./schematics/aprs_pocket.png)
 
+## BOARD
+
+![board](./images/carte.jpg)
 
 ## PCB
 
