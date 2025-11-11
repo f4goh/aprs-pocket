@@ -114,9 +114,18 @@ To optimize memory usage, disable the following options in the board settings:
 
 ## Flash the firmware
 
-UPDI (Unified Program and Debug Interface) allows programming ATtiny1614 using just one data pin. You can use a USB-to-Serial adapter with a 4.7kΩ resistor and the megatinycore to upload code via Arduino IDE.
+UPDI (Unified Program and Debug Interface) allows programming ATtiny1614 using just one data pin. 
+You need to programm jtag2udi in an Arduino uno before
 
 ![UPDI](./images/UPDI.png)
+
+After using the online configuration software (Google Chrome browser) to program your callsign.
+
+![CONFIG](./images/aprs-pocket-config.png)
+
+Finally, place the jumper in GPS position and connect the handheld device to connector J2. LED D2 will flash once the GPS has acquired the time. LED D1 indicates PTT status during transmission.
+
+![NORMAL](./images/aprs-pocket-config-normal.png)
 
 ## License
 
