@@ -125,7 +125,7 @@ After using the online configuration software (Google Chrome browser) to program
 
 Finally, place the jumper in GPS position and connect the handheld device to connector J2. LED D2 will flash once the GPS has acquired the time. LED D1 indicates PTT status during transmission.
 
-![NORMAL](./images/aprs-pocket-config-normal.png)
+![NORMAL](./images/aprs-pocket-pcb-normal.png)
 
 ## License
 
